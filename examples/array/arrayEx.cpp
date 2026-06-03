@@ -8,6 +8,46 @@ std::ostream& operator<<(std::ostream& os,const std::array<int, 10>& arr){
     return os;
 }
 
+//Sorting
+
+//buble sort
+template<typename T>
+using condition_func = std::function<bool(const T&first,const T&second)>;
+template<typename T, size_t n>
+void bubleSort(std::array<T, n>& array, const condition_func<T>& condition){
+    for (int i =0; i<array.size();i++) {
+        for (int j =0; j<array.size()-1; j++) {
+            if(condition(array[j],array[j+1])) std::swap(array[j],array[j+1]);
+        }
+    }
+}
+//TODO: merge sort
+
+
+//Searching
+
+//linear search
+template<typename T, size_t n>
+std::optional<T> linSearch(std::array<T,n>& arr, const T& value){
+    for (int i = 0; i<arr.size(); i++) {
+        if(arr[i] == value) return arr[i];
+    }
+    return {};
+}
+//binary search
+template<typename T, size_t n>
+std::optional<T> binSearch(std::array<T,n>& arr, const T& value){
+    int left = 0;
+    int right = (int)arr.size()-1;
+    int middle = (left+right)/2;
+    while (left<=right) {
+        if(arr[middle] == value) return arr[middle];
+        (arr[middle] < value)? left = middle +1 : right = middle - 1;
+        middle = (left+right)/2;
+    }
+    return {};
+}
+
 int main()
 {
     
@@ -55,9 +95,22 @@ int main()
                      array < array2,
                      array >= array2,
                      array <= array2);
+        
+        std::array<int,10> emptyArr;
+        std::cout << "Empty Arr:" << emptyArr<<std::endl;
+        array = {1,2,3,4,5,6,7,8,9,10};
+        std::cout << "Array: "<<array<<std::endl;
+        std::cout << linSearch(array, 5).value_or(INT64_MAX) <<" "<< linSearch(array, 11).value_or(INT64_MAX)<< std::endl;
+        //std::sort(array.begin(), array.end());
+        bubleSort<int, 10>(array, [](const int& a, const int& b) {
+                return a > b;
+        });
+        std::cout << "Sorted array: "<<array<<std::endl;
+        std::cout << binSearch(array, 5).value_or(INT64_MAX) <<" "<< binSearch(array, 11).value_or(INT64_MAX)<< std::endl;
     }
     std::cout << "=========My Array============\n";
-    Custom::array<int> MyArray;
+    Custom::array<int,10> MyArray;
+    MyArray = {1};
     std::cout << "Array: "<< MyArray <<std::endl;
     return 0;
 }
