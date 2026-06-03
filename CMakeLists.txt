@@ -9,7 +9,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 add_library(linked_list ${PROJECT_SOURCE_DIR}/src/list/linked_list.cpp)
 target_include_directories(linked_list PUBLIC ${PROJECT_SOURCE_DIR}/include/list/) 
 
-add_library(array ${PROJECT_SOURCE_DIR}/src/array/array.cpp) 
-target_include_directories(array PUBLIC ${PROJECT_SOURCE_DIR}/include/array/) 
+add_library(array INTERFACE ${PROJECT_SOURCE_DIR}/include/array/array.hpp) 
+target_include_directories(array INTERFACE ${PROJECT_SOURCE_DIR}/include/array/)
 
 add_subdirectory(examples)
