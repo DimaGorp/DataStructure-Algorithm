@@ -1,3 +1,5 @@
+#include <functional>
+#include <optional>
 #include <iostream>
 #include "array.hpp"
 #include "array"
@@ -110,7 +112,7 @@ int main()
     }
     std::cout << "=========My Array============\n";
     Custom::array<int,10> MyArray;
-    MyArray = {1};
+    //MyArray = {1};
     std::cout << "Array: "<< MyArray <<std::endl;
     return 0;
 }
