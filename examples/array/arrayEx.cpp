@@ -1,10 +1,18 @@
+#include <forward_list>
 #include <functional>
 #include <optional>
 #include <iostream>
+
 #include "array.hpp"
 #include "array"
-
-std::ostream& operator<<(std::ostream& os,const std::array<int, 10>& arr){
+template<typename T, size_t n>
+std::ostream& operator<<(std::ostream& os,const std::array<T, n>& arr){
+    for(const int& element:arr)
+        os<<element<<" ";
+    return os;
+}
+template<typename T, size_t n>
+std::ostream& operator<<(std::ostream& os,const Custom::array<T, n>& arr){
     for(const int& element:arr)
         os<<element<<" ";
     return os;
@@ -24,8 +32,17 @@ void bubleSort(std::array<T, n>& array, const condition_func<T>& condition){
     }
 }
 //TODO: merge sort
-
-
+template<typename T>
+using condition_func = std::function<bool(const T&first,const T&second)>;
+template<typename T, size_t n>
+void mergeSort(std::array<T, n>& array, const condition_func<T>& condition)
+{
+    /*for (int i =0; i<array.size();i++) 
+        for (int j =0; j<array.size()-1; j++)
+        {
+            
+        }*/
+}
 //Searching
 
 //linear search
@@ -34,7 +51,7 @@ std::optional<T> linSearch(std::array<T,n>& arr, const T& value){
     for (int i = 0; i<arr.size(); i++) {
         if(arr[i] == value) return arr[i];
     }
-    return {};
+    return std::nullopt;
 }
 //binary search
 template<typename T, size_t n>
@@ -47,7 +64,7 @@ std::optional<T> binSearch(std::array<T,n>& arr, const T& value){
         (arr[middle] < value)? left = middle +1 : right = middle - 1;
         middle = (left+right)/2;
     }
-    return {};
+    return std::nullopt;
 }
 
 int main()
@@ -55,7 +72,7 @@ int main()
     
     std::cout << "=========std::array============\n";
     {
-        std::array<int, 10> array = {1,2,3,4,5,6,7,8,9,11};
+        std::array<int, 11> array = {1,2,3,4,5,6,7,8,9,11};
         std::printf("First element: %d, Last element:  %d\n",array.front(),array.back());
         std::cout << "Array: "<< array <<std::endl;
         std::printf("Size: %ld, Max Size: %ld\n",array.size(),array.max_size());
@@ -78,7 +95,7 @@ int main()
         std::cout << "Array after set 10 to index 8: "<< array <<std::endl;
     
         //swaping arrays
-        std::array<int, 10> array2 = {1,2,3,4,5,6,7,8,9,10};
+        std::array<int, 11> array2 = {1,2,3,4,5,6,7,8,9,10};
         array.swap(array2);
         std::cout << "Swapping arrays:\nArray1: "<<array<<"\nArray2: "<<array2 <<"\n";
         //operator=
@@ -101,18 +118,14 @@ int main()
         std::array<int,10> emptyArr;
         std::cout << "Empty Arr:" << emptyArr<<std::endl;
         array = {1,2,3,4,5,6,7,8,9,10};
-        std::cout << "Array: "<<array<<std::endl;
-        std::cout << linSearch(array, 5).value_or(INT64_MAX) <<" "<< linSearch(array, 11).value_or(INT64_MAX)<< std::endl;
-        //std::sort(array.begin(), array.end());
-        bubleSort<int, 10>(array, [](const int& a, const int& b) {
-                return a > b;
-        });
-        std::cout << "Sorted array: "<<array<<std::endl;
-        std::cout << binSearch(array, 5).value_or(INT64_MAX) <<" "<< binSearch(array, 11).value_or(INT64_MAX)<< std::endl;
+        /*auto elem = std::find(array.begin(), array.end(),10);
+        std::cout << (elem == nullptr)? *elem : "Not found" << std::endl;*/
     }
     std::cout << "=========My Array============\n";
     Custom::array<int,10> MyArray;
-    //MyArray = {1};
-    std::cout << "Array: "<< MyArray <<std::endl;
+    Custom::array<int,10> MyArray2;
+    MyArray = MyArray2;
+    //MyArray = {1,2,3,4,5,6,7,8,9,10};
+    //std::cout << "Array: "<< MyArray <<std::endl;
     return 0;
 }
